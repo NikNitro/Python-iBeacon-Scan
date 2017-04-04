@@ -28,16 +28,18 @@ print macs
 blescan.hci_le_set_scan_parameters(sock)
 blescan.hci_enable_le_scan(sock)
 
-#Conectarlo a la central
-socket_c = socket.socket()  
-socket_c.connect((RASPI_IP, PUERTO))  
 
 while True:
+	#Conectarlo a la central
+	socket_c = socket.socket()  
+	socket_c.connect((RASPI_IP, PUERTO))  
 	returnedList = blescan.parse_events_2(sock, macs, 10)
 	print "----------"
 	for beacon in returnedList:
-	#	print beacon
+		#print beacon
 		socket_c.send(beacon) 
-		time.sleep(5)
+		#time.sleep(5)
+	socket_c.send('END')
+	socket_c.close()
 
 
