@@ -6,10 +6,10 @@ class Baliza:
       self.mac    = mac
       self.posX   = posX
       self.posY   = posY
-"""
+
    def __str__(self):
       return self.nombre
-
+"""
    def getNombre(self):
       return self.nombre
 
@@ -33,12 +33,8 @@ def readFile(name):
    numLinea = 0
    friendList = []
    while linea != "":
-#      values = linea.split("@")
-#      nombre = values(1)
-#      mac = values(2)
-#      posX = values(3)
-#      posY = values(4)
-      nombre,mac,posX,posY= linea.split("@")
+      # El resto es porque sino me metia un barra-r barra-n en la ultima variable.
+      nombre,mac,posX,posY,resto= linea.split("@")
       baliza = Baliza(nombre, mac, posX, posY)
       friendList+= [baliza]
       numLinea=numLinea+1
