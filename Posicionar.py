@@ -104,3 +104,9 @@ def IsThereASimilarKey(mapObj, elem, margen=1):
 			result = i
 
 	return result
+
+def average(lista):
+	suma = 0
+	for n in lista:
+		suma += int(n)
+	return suma/len(lista)
