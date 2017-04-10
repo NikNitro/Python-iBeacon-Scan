@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 import socket
 import time
@@ -34,12 +33,12 @@ while True:
 	socket_c = socket.socket()  
 	socket_c.connect((RASPI_IP, PUERTO))  
 	returnedList = blescan.parse_events_2(sock, macs, 10)
-	print "----------"
 	for beacon in returnedList:
-		#print beacon
+		print "----------"
+		print beacon
 		socket_c.send(beacon) 
-		#time.sleep(5)
-	socket_c.send('END')
+	#time.sleep(5)
+	#socket_c.send('END')
 	socket_c.close()
 
 

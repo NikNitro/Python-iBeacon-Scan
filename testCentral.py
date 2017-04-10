@@ -3,6 +3,7 @@ import socket
 import fileLibrary as fl
 from collections import deque
 import Posicionar as pos
+import time
 
 PUERTO = 5010
 MAX = 10 # Número de paquetes que vamos a guardar de cada baliza
@@ -35,21 +36,22 @@ try:
 		socket_c, (host_c, puerto_c) = socket_s.accept()
 		#accept se mantiene a la espera de conexiones entrantes, bloqueando la ejecución hasta que llega un mensaje
 		try:
-			recibido = socket_c.recv(8000)
-			while(recibido!='END'):
-				#print("----------------------")
+			recibido = socket_c.recv(38)
+			while(recibido):#!='END'):
+				#time.sleep(1)
+				print("----------------------")
+				print "Recibido de ", host_c, " el mensaje", recibido
 				mac, valx, valy, thrash, pwr = recibido.split(",")
 				dicRecepcion[mac].append(pwr)
-				while(len(dicRecepcion[mac]) > MAX):
-					dicRecepcion[mac].popleft()
-				#print "Recibido de ", host_c, " el mensaje", recibido
-				recibido = socket_c.recv(8000)
+				#while(len(dicRecepcion[mac]) > MAX):
+				#	dicRecepcion[mac].popleft()
+				recibido = socket_c.recv(38)
 				if not recibido: break
 			#socket_c.send("200")
 		finally:
 			socket_c.close()
 
-		macsCompletas = list( mac for mac in dicBalizas.keys() if len(dicRecepcion[mac])==MAX )
+		macsCompletas = list( mac for mac in dicBalizas.keys() if len(dicRecepcion[mac])>=MAX )
 		dicMedia = dict( list( (mac, pos.average(dicRecepcion[mac])) for mac in macsCompletas) )
 		for mac in dicMedia.keys():
 			print("VALOR MEDIA: "+str(mac) + ": " + str(dicMedia[mac]))
