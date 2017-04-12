@@ -7,6 +7,12 @@
 #import bluetooth._bluetooth as bluez
 from sympy import *
 
+# Más info sobre las constantes en la tabla de drive. 
+# Es necesario calibrarlas ante cualquier cambio.
+# Sería interesante automatizar este proceso
+TXPOWER = -72.49269311
+NCONSTANT = 0.3886
+
 def Posicionar(distancias):
 	#POSICIONAR Recibe las distancias a cada baliza en forma de ecuación y
 	# devuelve la posición del elemento a encontrar.
@@ -96,6 +102,20 @@ def Posicionar(distancias):
 
 	print(elemX)
 	print(elemY)
+	return (elemX, elemY)
+
+#####################################################
+# Si rssi = -10 * n * log10(distancia) + txpower    #
+# distancia = 10 ^ ((txpower-rssi)/10*n)			#
+# La devuelvo multiplicada por 10 para obtener mm	#
+#####################################################
+def rssi2distance(rssi):
+	num =TXPOWER-rssi
+	den = 10*NCONSTANT
+	exp = num/den
+	distance = pow(10, exp)
+	return distance*100 
+
 
 def IsThereASimilarKey(mapObj, elem, margen=1):
 	result = -1

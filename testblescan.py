@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 import socket
 import time
-
+from SocketUtilities import obtener_mac
 import blescan
 import fileLibrary as fl
 import sys
-
 import bluetooth._bluetooth as bluez
 
 PUERTO = 5010
 RASPI_IP = '192.168.1.14'
+mi_mac = obtener_mac('eth0').lower()
+print(mi_mac)
 
 dev_id = 0
 try:
@@ -34,9 +35,9 @@ while True:
 	socket_c.connect((RASPI_IP, PUERTO))  
 	returnedList = blescan.parse_events_2(sock, macs, 10)
 	for beacon in returnedList:
-		print "----------"
-		print beacon
-		socket_c.send(beacon) 
+		#print "----------"
+		#print beacon
+		socket_c.send(mi_mac+","+beacon) 
 	#time.sleep(5)
 	#socket_c.send('END')
 	socket_c.close()
