@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 import socket
 import time
-from SocketUtilities import obtener_mac
+#from SocketUtilities import obtener_mac
 import blescan
 import fileLibrary as fl
 import sys
 import bluetooth._bluetooth as bluez
 
 PUERTO = 5010
-RASPI_IP = '192.168.1.14'
+SERVER = '192.168.1.8'
+#Porque obtenerMac no funciona en windows debido a la librería fcntl
 mi_mac = obtener_mac('eth0').lower()
 print(mi_mac)
 
@@ -32,7 +33,7 @@ blescan.hci_enable_le_scan(sock)
 while True:
 	#Conectarlo a la central
 	socket_c = socket.socket()  
-	socket_c.connect((RASPI_IP, PUERTO))  
+	socket_c.connect((SERVER, PUERTO))  
 	returnedList = blescan.parse_events_2(sock, macs, 10)
 	for beacon in returnedList:
 		#print "----------"
