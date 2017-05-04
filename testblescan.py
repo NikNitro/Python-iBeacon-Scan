@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import socket
 import time
-#from SocketUtilities import obtener_mac
+from SocketUtilities import obtener_mac
 import blescan
 import fileLibrary as fl
 import sys
@@ -9,7 +9,7 @@ import bluetooth._bluetooth as bluez
 
 PUERTO = 5010
 SERVER = '192.168.1.8'
-#Porque obtenerMac no funciona en windows debido a la librería fcntl
+
 mi_mac = obtener_mac('eth0').lower()
 print(mi_mac)
 
@@ -39,7 +39,7 @@ while True:
 		#print "----------"
 		#print beacon
 		socket_c.send(mi_mac+","+beacon) 
-	#time.sleep(5)
+	time.sleep(1)
 	#socket_c.send('END')
 	socket_c.close()
 
