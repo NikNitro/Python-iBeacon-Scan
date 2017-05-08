@@ -77,6 +77,7 @@ try:
 				distancias.append(polinomio)
 
 			posicionFinal = pos.Posicionar(distancias)
+			print("Posicion actual: ("+str(posicionFinal[0])+","+str(posicionFinal[1])+")")
 
 
 finally:

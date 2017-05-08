@@ -51,6 +51,7 @@ def Posicionar(distancias):
 						(auxsolx, auxsoly) = resAux[1]
 						solx = [solx,auxsolx]
 						soly = [soly,auxsoly]
+
 					#Estas asignaciones son mas extrañas que las de MatLab porque en MatLab solve
 					# te devuelve una lista con las 'X' y otra con las 'Y' mientras que en Python
 					# te devuelve las soluciones en tuplas
@@ -58,23 +59,36 @@ def Posicionar(distancias):
 					#print(soly)
 					# Guardamos la x
 					for k in range(0, len(solx)):
-						# INICIO Update 1
-						#if(mapObjX.isKey(single(solx(k)))) 
-						goodKey = IsThereASimilarKey(mapObjX, solx[k]);
-						if(goodKey!=-1):
-							mapObjX[goodKey] = (mapObjX[goodKey] + 1);
-						else:
-							mapObjX[solx[k]] = 1;
+						""" Vamos a añadir clausulas para ignorar las soluciones complejas """
+						a = complex(solx[k])
+						print("El tipo es: " + str(type(a)))
+						if(a.imag == 0):
+							# INICIO Update 1
+							#if(mapObjX.isKey(single(solx(k)))) 
+							print("solx vale " + str(a))
+							goodKey = IsThereASimilarKey(mapObjX, solx[k]);
+							#print("Encontrada ke X similar a "+ str(solx[k]) + ': '+str(goodKey)+'\n')
+							if(goodKey!=-1):
+								mapObjX[goodKey] = (mapObjX[goodKey] + 1);
+							else:
+								mapObjX[int(solx[k])] = 1;
 
+						""" ñañaña """
 		            # Y guardamos la y
 					for k in range(0, len(soly)):
-						goodKey = IsThereASimilarKey(mapObjY, soly[k]);
-						if(goodKey!=-1):
-							mapObjY[goodKey] = (mapObjY[goodKey] + 1);
-						else:
-							mapObjY[soly[k]]= 1;
-							# FIN Update 1
+						""" Vamos a añadir clausulas para ignorar las soluciones complejas """
+						a = complex(soly[k])
+						if(a.imag == 0):
+							print("soly vale " + str(a))
+							goodKey = IsThereASimilarKey(mapObjY, soly[k]);
+							#print("Encontrada key Y similar a "+ str(soly[k]) + ': '+str(goodKey)+'\n')
+							if(goodKey!=-1):
+								mapObjY[goodKey] = (mapObjY[goodKey] + 1);
+							else:
+								mapObjY[int(soly[k])]= 1;
+								# FIN Update 1
 
+						""" ñañaña """
 	## Elegimos a los valores de x y de y resultantes, tomando los que tienen 
 	# más coincidencias
 

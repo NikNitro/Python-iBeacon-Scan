@@ -4,11 +4,22 @@ from math import *
 from sympy import *
 """ Prueba para eliminar complejos """
 c1 = 4 + 3j
+print(type(c1))
 if(type(c1) != complex):
 	print('no complejo')
 else:
 	print('complejo')
+# .real y .imag nos da las partes reales e imaginarias de un numero
+print(str(c1.real) + " " + str(c1.imag))
+e1 = 5
 
+print("Ahora el real: " + str(e1.real) + " " + str(e1.imag))
+
+#Por tanto
+if(e1.imag == 0):
+	print('no complejo')
+else:
+	print('complejo')
 """ end prueba """
 
 
