@@ -72,8 +72,11 @@ try:
 				A = int(dicBalizas.get(mac)[0])
 				B = int(dicBalizas.get(mac)[1])
 				C = pos.rssi2distance(rssiMedia.get(mac))
+				print('rssi: ' + str(rssiMedia.get(mac)))
+				print('distancia: '+str(C))
 
 				polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - C**2)
+				print(polinomio)
 				distancias.append(polinomio)
 
 			posicionFinal = pos.Posicionar(distancias)
