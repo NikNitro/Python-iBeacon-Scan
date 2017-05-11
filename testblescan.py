@@ -39,8 +39,8 @@ while True:
 		#print "----------"
 		#print beacon
 		socket_c.send(mi_mac+","+beacon) 
-	time.sleep(1)
 	#socket_c.send('END')
 	socket_c.close()
+	time.sleep(1)
 
 
