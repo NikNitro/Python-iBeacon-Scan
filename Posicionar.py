@@ -18,7 +18,7 @@ def Posicionar(distancias):
 	# devuelve la posición del elemento a encontrar.
 	#   
 
-	MARGEN=100
+	MARGEN=500
 
 	## Obtenemos los valores dos a dos y los resolvemos, guardándolos en 
 	# un mapa de resultados
@@ -83,6 +83,7 @@ def Posicionar(distancias):
 					for k in range(0, len(soly)):
 						""" Vamos a añadir clausulas para ignorar las soluciones complejas """
 						a = complex(soly[k])
+						#Si es un numero imaginario, nos quedamos solo con su parte real
 						if(a.imag == 0):
 							#print("soly vale " + str(a))
 							goodKey = IsThereASimilarKey(mapObjY, soly[k], MARGEN);
@@ -96,44 +97,47 @@ def Posicionar(distancias):
 						""" ñañaña """
 	## Elegimos a los valores de x y de y resultantes, tomando los que tienen 
 	# más coincidencias
-
 	listaX = mapObjX.keys();
-	elemX = listaX[0];
-	numX  = mapObjX[elemX];
 	listaY = mapObjY.keys();
-	elemY = listaY[0];
-	numY  = mapObjY[elemY];
 
-	for i in range(1,len(listaX)):
-	    elemAux = listaX[i];
-	    numAux = mapObjX[elemAux];
-	    if(numAux>numX):
-	        numX = numAux;
-	        elemX = elemAux;
-	        #print("Nuevo numX = "+ str(elemX))
-	for i in range(1,len(listaY)):
-	    elemAux = listaY[i];
-	    numAux = mapObjY[elemAux];
-	    if(numAux>numY):
-	        numY = numAux;
-	        elemY = elemAux;
-	        #print("Nuevo numY = "+ str(elemY))
+	if(len(listaX)>0 and len(listaY)>0):
+		elemX = listaX[0];
+		numX  = mapObjX[elemX];
+		elemY = listaY[0];
+		numY  = mapObjY[elemY];
 
-	print(elemX)
-	print(elemY)
-	return (elemX, elemY)
+		for i in range(1,len(listaX)):
+		    elemAux = listaX[i];
+		    numAux = mapObjX[elemAux];
+		    if(numAux>numX):
+		        numX = numAux;
+		        elemX = elemAux;
+		        #print("Nuevo numX = "+ str(elemX))
+		for i in range(1,len(listaY)):
+		    elemAux = listaY[i];
+		    numAux = mapObjY[elemAux];
+		    if(numAux>numY):
+		        numY = numAux;
+		        elemY = elemAux;
+		        #print("Nuevo numY = "+ str(elemY))
+
+		#print(elemX)
+		#print(elemY)
+		return (elemX, elemY)
+	else:
+		return "noSoluc"
 
 #####################################################
 # Si rssi = -10 * n * log10(distancia) + txpower    #
 # distancia = 10 ^ ((txpower-rssi)/10*n)			#
 # La devuelvo multiplicada por 10 para obtener mm	#
 #####################################################
-def rssi2distance(rssi):
+def rssi2distance(rssi, txpower=TXPOWER, n=NCONSTANT):
 	num =TXPOWER-rssi
 	den = 10*NCONSTANT
 	exp = num/den
 	distance = pow(10, exp)
-	return distance#*100 
+	return distance*1000
 
 
 def IsThereASimilarKey(mapObj, elem, margen=1):
