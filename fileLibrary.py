@@ -1,11 +1,12 @@
 DEBUG = False
 
 class Baliza:
-   def __init__(self, nombre, mac, posX, posY):
+   def __init__(self, nombre, mac, posX, posY, txpower):
       self.nombre = nombre
       self.mac    = mac
       self.posX   = posX
       self.posY   = posY
+      self.txpower = txpower
 
    def __str__(self):
       return self.nombre
@@ -34,8 +35,8 @@ def readFile(name):
    friendList = []
    while linea != "":
       # El resto es porque sino me metia un barra-r barra-n en la ultima variable.
-      nombre,mac,posX,posY,resto= linea.split("@")
-      baliza = Baliza(nombre, mac, posX, posY)
+      nombre,mac,posX,posY,txpower, resto= linea.split("@")
+      baliza = Baliza(nombre, mac, posX, posY, txpower)
       friendList+= [baliza]
       numLinea=numLinea+1
       linea = f.readline()
