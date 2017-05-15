@@ -50,6 +50,7 @@ try:
 	plt.legend(loc = 2)
 	#Para que lo muestre
 	plt.show()
+	plt.interactive(False)
 
 	##Creamos el fichero de log, sobreescribiendo el anterior si lo hubiera.
 	f=open("centralLog.aml", "w")
@@ -70,15 +71,15 @@ try:
 		socket_c, (host_c, puerto_c) = socket_s.accept()
 		#accept se mantiene a la espera de conexiones entrantes, bloqueando la ejecución hasta que llega un mensaje
 		try:
-			recibido = socket_c.recv(56)
+			recibido = socket_c.recv(39)
 			while(recibido):#!='END'):
 				#time.sleep(1)
 				#print("----------------------")
 				#print "Recibido de ", host_c, " el mensaje", recibido
 				# Actualmente no usamos la variable mac porque suponemos que solo hay que
 				# localizar un elemento
-				mac_origen, mac, valx, valy, thrash, pwr = recibido.split(",")
-				#mac_origen, mac, pwr = recibido.split(",")
+				#mac_origen, mac, valx, valy, thrash, pwr = recibido.split(",")
+				mac_origen, mac, pwr = recibido.split(",")
 
 				f=open("centralLog.aml", "a") #append, para que no borre
 				f.write(time.strftime("%X") + ": --" + str(dicBalizas[mac_origen].nombre) +"-- " + str(recibido) + "\n")
