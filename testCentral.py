@@ -18,7 +18,7 @@ import numpy as np
 x=Symbol('x') 
 y=Symbol('y')
 PUERTO = 5010
-MAX = 50 # Número de paquetes que vamos a guardar de cada baliza
+MAX = 10 # Número de paquetes que vamos a guardar de cada baliza
 socket_s = socket.socket()
 
 #El socket se puede dejar vacío
@@ -43,9 +43,11 @@ try:
 	##Creamos el grafico
 	for bal in balizas:
 		print("Imprimiendo " + str(bal.nombre))
-		plt.scatter(bal.posX,bal.posY, marker='2', label='hola')
+		plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
 	#Para que pueda seguir calculando cosas
 	plt.interactive(True)
+	#Para que muestre la leyenda
+	plt.legend(loc = 2)
 	#Para que lo muestre
 	plt.show()
 
@@ -76,6 +78,7 @@ try:
 				# Actualmente no usamos la variable mac porque suponemos que solo hay que
 				# localizar un elemento
 				mac_origen, mac, valx, valy, thrash, pwr = recibido.split(",")
+				#mac_origen, mac, pwr = recibido.split(",")
 
 				f=open("centralLog.aml", "a") #append, para que no borre
 				f.write(time.strftime("%X") + ": --" + str(dicBalizas[mac_origen].nombre) +"-- " + str(recibido) + "\n")
