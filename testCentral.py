@@ -18,8 +18,15 @@ import numpy as np
 x=Symbol('x') 
 y=Symbol('y')
 PUERTO = 5010
-MAX = 10 # Número de paquetes que vamos a guardar de cada baliza
+MARGEN=500
+MAX = 20 # Número de paquetes que vamos a guardar de cada baliza
+TAMMSG = 39 # Tam del mensaje a recibir (mac+,+mac+,+txpower)
 socket_s = socket.socket()
+ultPosEncontrada = "ninguna"
+#Para los dibujos
+listaPuntosX=[]
+listaPuntosY=[]
+total=0
 
 #El socket se puede dejar vacío
 socket_s.bind(('', PUERTO))
@@ -44,13 +51,13 @@ try:
 	for bal in balizas:
 		print("Imprimiendo " + str(bal.nombre))
 		plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
+	
 	#Para que pueda seguir calculando cosas
-	plt.interactive(True)
+	#plt.interactive(True)
 	#Para que muestre la leyenda
 	plt.legend(loc = 2)
 	#Para que lo muestre
-	plt.show()
-	plt.interactive(False)
+	#plt.show()
 
 	##Creamos el fichero de log, sobreescribiendo el anterior si lo hubiera.
 	f=open("centralLog.aml", "w")
@@ -66,12 +73,12 @@ try:
 
 	# Y otro diccionario para asignar, a una mac, una cola con los 10 últimos paquetes que le han llegado.
 	dicRecepcion = dict(list( ( a, deque() ) for a in dicBalizas.keys() ))
-
-	while(True):
+	recibido = "first"
+	while(recibido!='END'):
 		socket_c, (host_c, puerto_c) = socket_s.accept()
 		#accept se mantiene a la espera de conexiones entrantes, bloqueando la ejecución hasta que llega un mensaje
 		try:
-			recibido = socket_c.recv(39)
+			recibido = socket_c.recv(TAMMSG)
 			while(recibido):#!='END'):
 				#time.sleep(1)
 				#print("----------------------")
@@ -87,9 +94,9 @@ try:
 
 				dicRecepcion[mac_origen].append(pwr)
 				# Para no consumir toda la memoria del dispositivo
-				while(len(dicRecepcion[mac_origen]) > MAX):
-					dicRecepcion[mac_origen].popleft()
-				recibido = socket_c.recv(56)
+				#while(len(dicRecepcion[mac_origen]) > MAX):
+				#	dicRecepcion[mac_origen].popleft()
+				recibido = socket_c.recv(TAMMSG)
 				if not recibido: break
 			#socket_c.send("200")
 		finally:
@@ -116,12 +123,27 @@ try:
 				print(polinomio)
 				distancias.append(polinomio)
 
-			posicionFinal = pos.Posicionar(distancias)
-			if(posicionFinal=="noSoluc"):
+			posicionFinal = pos.Posicionar(distancias, MARGEN)
+			if(posicionFinal=="noSoluc" and ultPosEncontrada == 'ninguna'):
 				print("No encontrada solucion todavia")
+			elif posicionFinal=="noSoluc":
+				print("Posicion anterior: ("+str(ultPosEncontrada[0])+","+str(ultPosEncontrada[1])+")")
 			else:
 				print("Posicion actual: ("+str(posicionFinal[0])+","+str(posicionFinal[1])+")")
-				plt.scatter(posicionFinal[0],posicionFinal[1],c='b')
+
+				listaPuntosX += [posicionFinal[0]]
+				listaPuntosY += [posicionFinal[1]]
+				ultPosEncontrada = posicionFinal
+				total = total + 1
+				if(total>10):
+					#####IMPRIMIMOS
+					##Creamos el grafico
+					#for bal in balizas:
+					#	plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
+					plt.scatter(listaPuntosX,listaPuntosY,c='b', label='posicion')
+					#plt.legend(loc = 1)
+					#plt.show()
+					total=0
 
 finally:
 	socket_s.close()

@@ -13,12 +13,12 @@ from sympy import *
 TXPOWER = -69.16666667#-72.49269311
 NCONSTANT = 1#0.3886
 
-def Posicionar(distancias):
+def Posicionar(distancias, MARGEN=100):
 	#POSICIONAR Recibe las distancias a cada baliza en forma de ecuación y
 	# devuelve la posición del elemento a encontrar.
 	#   
 
-	MARGEN=500
+	
 
 	## Obtenemos los valores dos a dos y los resolvemos, guardándolos en 
 	# un mapa de resultados

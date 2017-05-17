@@ -35,6 +35,7 @@ def readFile(name):
    friendList = []
    while linea != "":
       # El resto es porque sino me metia un barra-r barra-n en la ultima variable.
+      #nombre,mac,posX,posY,txpower, resto= linea.split("@")
       nombre,mac,posX,posY,txpower, resto= linea.split("@")
       baliza = Baliza(nombre, mac, posX, posY, txpower)
       friendList+= [baliza]
