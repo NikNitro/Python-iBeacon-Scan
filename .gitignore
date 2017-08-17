@@ -90,3 +90,6 @@ ENV/
 *.pyc
 *.aml
 *.zip
+
+ImageTests/
+
