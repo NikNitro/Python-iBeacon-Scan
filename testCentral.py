@@ -116,8 +116,9 @@ try:
 				A = int(dicBalizas.get(mac).posX)
 				B = int(dicBalizas.get(mac).posY)
 				C = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
+				C2 = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
 				print('---rssi: ' + str(rssiMedia.get(mac)))
-				print('---distancia: '+str(C))
+				print('---distancia: '+str(C) + " y con Book: " + str(C2))
 
 				polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - C**2)
 				print(polinomio)

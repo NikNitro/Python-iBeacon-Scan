@@ -6,6 +6,7 @@
 
 #import bluetooth._bluetooth as bluez
 from sympy import *
+import mpmath as mp
 
 # Más info sobre las constantes en la tabla de drive. 
 # Es necesario calibrarlas ante cualquier cambio.
@@ -19,7 +20,6 @@ def Posicionar(distancias, MARGEN=100):
 	#   
 
 	
-
 	## Obtenemos los valores dos a dos y los resolvemos, guardándolos en 
 	# un mapa de resultados
 	numDist = len(distancias);
@@ -137,7 +137,43 @@ def rssi2distance(rssi, txpower=TXPOWER, n=NCONSTANT):
 	den = 10*NCONSTANT
 	exp = num/den
 	distance = pow(10, exp)
+
+
 	return distance*1000
+
+"""
+python
+from Posicionar import *
+x = rssi2distanceBook(-80)
+x
+exit()
+"""
+# La función según el libro que estoy leyendo (Valentín)
+def rssi2distanceBook(rssi, txpower=TXPOWER, n=NCONSTANT):
+	exp = rssi/10
+	mW = pow(10, exp)
+
+	#Aplicamos la función 2.3 del libro
+	d0 = 1
+	Pij = mW
+	P0 = pow(10, TXPOWER/10)
+	# np pertenece al rango [2,4], donde los valores bajos se utilizan en entornos abiertos o con poca
+	# pérdida de potencia.
+	np = 4
+	# sigma es la desviación típica de la variable aleatoria distribuida de forma normal que representa
+	# el efecto aleatorio producido por las sombras que originan los diferentes obstáculos.
+	sigma = 18.75
+	mu = 10/mp.ln(10)
+	print Pij, P0, np, sigma, mu, mp.e, 
+
+	#Ahora montamos la función
+	distancia = d0
+	print distancia
+	distancia *= pow(Pij/P0, -1/np)
+	print distancia, " primer grupo ", pow(Pij/P0, -1/np)
+	distancia *= pow(mp.e, -(sigma*sigma)/(2*mu*mu*np*np))
+	print distancia, "segundo grupo ", pow(mp.e, -(sigma*sigma)/(2*mu*mu*np*np))
+	return distancia
 
 
 def IsThereASimilarKey(mapObj, elem, margen=1):
