@@ -8,7 +8,7 @@ import sys
 import bluetooth._bluetooth as bluez
 
 PUERTO = 5010
-SERVER = '192.168.1.8'
+SERVER = '192.168.31.116'
 
 mi_mac = obtener_mac('eth0').lower()
 print(mi_mac)
