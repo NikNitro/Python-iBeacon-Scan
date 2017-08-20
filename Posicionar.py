@@ -159,7 +159,7 @@ def rssi2distanceBook(rssi, txpower=TXPOWER, n=NCONSTANT):
 	P0 = pow(10, TXPOWER/10)
 	# np pertenece al rango [2,4], donde los valores bajos se utilizan en entornos abiertos o con poca
 	# pérdida de potencia.
-	np = 4
+	np = 2
 	# sigma es la desviación típica de la variable aleatoria distribuida de forma normal que representa
 	# el efecto aleatorio producido por las sombras que originan los diferentes obstáculos.
 	sigma = 18.75
@@ -168,11 +168,8 @@ def rssi2distanceBook(rssi, txpower=TXPOWER, n=NCONSTANT):
 
 	#Ahora montamos la función
 	distancia = d0
-	print distancia
 	distancia *= pow(Pij/P0, -1/np)
-	print distancia, " primer grupo ", pow(Pij/P0, -1/np)
 	distancia *= pow(mp.e, -(sigma*sigma)/(2*mu*mu*np*np))
-	print distancia, "segundo grupo ", pow(mp.e, -(sigma*sigma)/(2*mu*mu*np*np))
 	return distancia
 
 
