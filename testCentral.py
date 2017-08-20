@@ -94,8 +94,8 @@ try:
 
 				dicRecepcion[mac_origen].append(pwr)
 				# Para no consumir toda la memoria del dispositivo
-				#while(len(dicRecepcion[mac_origen]) > MAX):
-				#	dicRecepcion[mac_origen].popleft()
+				while(len(dicRecepcion[mac_origen]) > MAX):
+					dicRecepcion[mac_origen].popleft()
 				recibido = socket_c.recv(TAMMSG)
 				if not recibido: break
 			#socket_c.send("200")
@@ -103,7 +103,19 @@ try:
 			socket_c.close()
 
 		macsCompletas = list( mac for mac in dicBalizas.keys() if len(dicRecepcion[mac])>=MAX )
-		rssiMedia = dict( list( (mac, pos.average(dicRecepcion[mac])) for mac in macsCompletas) )
+
+		rssiMedia = {}
+		for mac in macsCompletas:
+			queue = dicRecepcion[mac]
+			lista = list(queue)
+			tamm = len(lista)
+			print "tamm ", tamm
+			lista.sort()
+			print "lista ", str(lista)
+			listaEnMedio = lista[3:7]
+			rssiMedia[mac] = pos.average(listaEnMedio)
+
+		# rssiMedia = dict( list( (mac, pos.average(list(dicRecepcion[mac]).sort()[3:(len(dicRecepcion[mac])-3)])) for mac in macsCompletas) )
 		for mac in rssiMedia.keys():
 			print("VALOR MEDIA: "+str(mac) + ": " + str(rssiMedia[mac]))
 
@@ -115,10 +127,10 @@ try:
 			for mac in rssiMedia.keys():
 				A = int(dicBalizas.get(mac).posX)
 				B = int(dicBalizas.get(mac).posY)
-				C = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
-				C2 = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
+				C2 = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
+				C = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower) * 1000 # Para que lo de en milímetros
 				print('---rssi: ' + str(rssiMedia.get(mac)))
-				print('---distancia: '+str(C) + " y con Book: " + str(C2))
+				print('---distancia: '+str(C) + " y sin Book: " + str(C2))
 
 				polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - C**2)
 				print(polinomio)
