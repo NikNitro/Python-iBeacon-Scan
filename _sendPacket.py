@@ -11,8 +11,6 @@ import Posicionar as pos
 import time
 #To solve equations
 from sympy import *
-#To plot
-import matplotlib.pyplot as plt
 import numpy as np
 
 # In this test we're gonna send packets to the client and counting the time until we recept the answer.
