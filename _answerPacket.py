@@ -21,11 +21,7 @@ PUERTO = 5010
 MARGEN=500
 MAX = 20 # Número de paquetes que vamos a guardar de cada baliza
 TAMMSG = 39 # Tam del mensaje a recibir (mac+,+mac+,+txpower)
-#Para los dibujos
-listaPuntosX=[]
-listaPuntosY=[]
-total=0
-
+#El socket se puede dejar vacío
 friendList = fl.readFile("friendList.txt")
 #macs = list(a.mac.lower() for a in friendList)
 # Pero si friendlist ya es una lista de balizas. Podriamos mejorar esto
@@ -35,26 +31,28 @@ balizas = list(fl.Baliza(a.nombre.lower(), a.mac.lower(), a.posX.lower(), a.posY
 # Creamos un diccionario en el que asignamos a cada mac la baliza que tiene
 dicBalizas = dict(list((a.mac.lower(),a) for a in friendList))
 print(dicBalizas[balizas[0].mac])
-		
+
+# Y otro diccionario para asignar, a una mac, una cola con los 10 últimos paquetes que le han llegado.
+dicRecepcion = dict(list( ( a, deque() ) for a in dicBalizas.keys() ))
+recibido = "first"
+
 import bluetooth
 # RaspiHC será la baliza.
 
-bd_addr = "B8:27:EB:99:23:7E"
+server_sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 
 port = 1
+server_sock.bind(("",port))
+server_sock.listen(1)
 
-sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
-sock.connect((bd_addr, port))
+client_sock,address = server_sock.accept()
+print "Accepted connection from ",address
 
-sock.send("hello!!")
+data = client_sock.recv(1024)
+print "received [%s]" % data
 
-sock.close()
-
-
-
-
-
-
+client_sock.close()
+server_sock.close()
 
 
 
