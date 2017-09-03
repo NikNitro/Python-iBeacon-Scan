@@ -130,7 +130,7 @@ def Posicionar(distancias, MARGEN=100):
 #####################################################
 # Si rssi = -10 * n * log10(distancia) + txpower    #
 # distancia = 10 ^ ((txpower-rssi)/10*n)			#
-# La devuelvo multiplicada por 10 para obtener mm	#
+# La devuelvo multiplicada por 1 para obtener m	#
 #####################################################
 def rssi2distance(rssi, txpower=TXPOWER, n=NCONSTANT):
 	num =TXPOWER-rssi
@@ -139,7 +139,7 @@ def rssi2distance(rssi, txpower=TXPOWER, n=NCONSTANT):
 	distance = pow(10, exp)
 
 
-	return distance*1000
+	return distance*1
 
 """
 python
@@ -200,3 +200,32 @@ def VirtualBeacons(cual, cuantas):
 		li +=[stri]
 	print(li)
 	return li
+
+# Funciones para obtener la mejor n
+def miMinimize(f,entrada, salidaDeseada, bounds, times=100):
+
+	def f(entrada, salidaDeseada, n):
+	    distanciasCalculadas = []
+	    distanciasReales = salidaDeseada
+	    rssis = entrada
+	    distanciasCalculadas = num.array(rssi2distance(rssis,txpower=rssis[0], n=n))
+	    # print('calculadaS: ' + str(distanciasCalculadas))
+	    diferencia = distanciasReales - distanciasCalculadas
+	    # print(diferencia, sum(diferencia))
+	    return sum(diferencia)
+
+	inicio = bounds[0]
+	fin = bounds[1]
+	for i in range(0,times):
+		mitad = inicio + (fin-inicio)/2.
+		mitad1 = inicio+(mitad-inicio)/2.
+		mitad2 = mitad+(fin-mitad)/2.
+		
+		resAux1 = f(entrada, salidaDeseada, mitad1)
+		resAux2 = f(entrada, salidaDeseada, mitad2)
+		# print(resAux1, mitad1, resAux2, mitad2)
+		if resAux1>resAux2:
+			inicio = mitad
+		else:
+			fin = mitad
+	return mitad
