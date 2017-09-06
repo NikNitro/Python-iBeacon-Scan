@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 
-#import blescan
-#import fileLibrary as fl
-#import sys
-
-#import bluetooth._bluetooth as bluez
 from sympy import *
 import mpmath as mp
+from math import ceil
 
 # Más info sobre las constantes en la tabla de drive. 
 # Es necesario calibrarlas ante cualquier cambio.
@@ -202,7 +198,7 @@ def VirtualBeacons(cual, cuantas):
 	return li
 
 # Funciones para obtener la mejor n
-def miMinimize(f,entrada, salidaDeseada, bounds, times=100):
+def miMinimize(entrada, salidaDeseada, bounds, times=100):
 
 	def f(entrada, salidaDeseada, n):
 	    distanciasCalculadas = []
@@ -229,3 +225,51 @@ def miMinimize(f,entrada, salidaDeseada, bounds, times=100):
 		else:
 			fin = mitad
 	return mitad
+    
+
+def ajustar(nombre, verGrafica=false):
+    print("Iniciando ajuste para ", nombre)
+    dev_id = 0
+    try:
+            sock = bluez.hci_open_dev(dev_id)
+            print("ble thread started")
+
+    except:
+            print("error accessing bluetooth device...")
+            sys.exit(1)
+
+    blescan.hci_le_set_scan_parameters(sock)
+    blescan.hci_enable_le_scan(sock)
+    
+
+    maxima = input("Por favor, introduzca la distancia máxima")
+    distancias = [1, ceil(maxima/2.),maxima]
+    potencias = []
+
+    for d in distancias:
+        print("Por favor, póngase a " + str(d) + " metros de la baliza y pulse cualquier tecla.")
+        input()
+        print("Por favor, espere un momento...")
+        listaBeacons = []
+        while len(listaBeacons)<20:
+            
+            returnedList = blescan.parse_events_2(sock, macs, 10)
+            for beacon in returnedList:
+                mac, pwr = recibido.split(",")
+                listaBeacons.append(pwr)
+        potencias.append(sum(listaBeacons)/len(listaBeacons))
+    
+    print("Calculando función...")
+    p0 = num.poly1d(num.polyfit(distancias,potencias,30))
+    
+    if verGrafica:
+        xp = num.array([-50, -68, -70, -72, -73, -74, -78, -80.82677989, -85, -85.40515262, -88.65355977, -89, -91.17322011, -92, -96, -98])
+        
+        print("Imprimiendo función")
+        plt.plot(potencias,distancias,'r*', xp, p0(xp), '--')
+        plt.ylim ( -1,10)
+        plt.show()
+    
+    return p0
+
+    
