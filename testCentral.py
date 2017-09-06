@@ -48,14 +48,19 @@ try:
 	print(dicBalizas[balizas[0].mac])
 
 	##Creamos el grafico
+	quiere = "n"
 	for bal in balizas:
-		print("Imprimiendo " + str(bal.nombre))
-		plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
+		# print("Imprimiendo " + str(bal.nombre))
+		#plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
+		print("¿Quiere ajustar la baliza " + str(bal.nombre) + "? (y/n)")
+		quiere = input()
+		if quiere=="y":
+                    bal.setDistanceFunct(pos.ajustar(bal.nombre))
 	
 	#Para que pueda seguir calculando cosas
 	#plt.interactive(True)
 	#Para que muestre la leyenda
-	plt.legend(loc = 2)
+	#plt.legend(loc = 2)
 	#Para que lo muestre
 	#plt.show()
 
@@ -63,12 +68,12 @@ try:
 	f=open("centralLog.aml", "w")
 	f.write("Lectura de " + time.strftime("%d/%m/%y") + "\n") #Tambien vale poner "%x"
 	f.close()
-
+	
 
 
 
 	nombre, nose, ip = socket.gethostbyname_ex(socket.gethostname())
-	print "Sistema '",nombre, "' esperando conexión en el puerto ", PUERTO
+	print("Sistema '",nombre, "' esperando conexión en el puerto ", PUERTO)
 	#print "Y en la dirección ", ip[0]
 
 	# Y otro diccionario para asignar, a una mac, una cola con los 10 últimos paquetes que le han llegado.
@@ -109,9 +114,9 @@ try:
 			queue = dicRecepcion[mac]
 			lista = list(queue)
 			tamm = len(lista)
-			print "tamm ", tamm
+			print("tamm ", tamm)
 			lista.sort()
-			print "lista ", str(lista)
+			print("lista ", str(lista))
 			listaEnMedio = lista[3:7]
 			rssiMedia[mac] = pos.average(listaEnMedio)
 

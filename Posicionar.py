@@ -3,6 +3,7 @@
 from sympy import *
 import mpmath as mp
 from math import ceil
+import sys
 
 # Más info sobre las constantes en la tabla de drive. 
 # Es necesario calibrarlas ante cualquier cambio.
@@ -125,8 +126,8 @@ def Posicionar(distancias, MARGEN=100):
 
 #####################################################
 # Si rssi = -10 * n * log10(distancia) + txpower    #
-# distancia = 10 ^ ((txpower-rssi)/10*n)			#
-# La devuelvo multiplicada por 1 para obtener m	#
+# distancia = 10 ^ ((txpower-rssi)/10*n)            #
+# La devuelvo multiplicada por 1 para obtener m	    #
 #####################################################
 def rssi2distance(rssi, txpower=TXPOWER, n=NCONSTANT):
 	num =TXPOWER-rssi
@@ -160,7 +161,7 @@ def rssi2distanceBook(rssi, txpower=TXPOWER, n=NCONSTANT):
 	# el efecto aleatorio producido por las sombras que originan los diferentes obstáculos.
 	sigma = 18.75
 	mu = 10/mp.ln(10)
-	print Pij, P0, np, sigma, mu, mp.e, 
+	print(Pij, P0, np, sigma, mu, mp.e) 
 
 	#Ahora montamos la función
 	distancia = d0
