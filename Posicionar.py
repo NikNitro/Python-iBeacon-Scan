@@ -254,13 +254,13 @@ def ajustar(nombre, sock, macs, verGrafica=False):
     print("Calculando función...")
     p0 = num.poly1d(num.polyfit(potencias,distancias,30))
     
-    if verGrafica:
-        xp = num.array([-50, -68, -70, -72, -73, -74, -78, -80.82677989, -85, -85.40515262, -88.65355977, -89, -91.17322011, -92, -96, -98])
-        
-        print("Imprimiendo función")
-        plt.plot(potencias,distancias,'r*', xp, p0(xp), '--')
-        plt.ylim ( -1,10)
-        plt.show()
+    #if verGrafica:
+    #    xp = num.array([-50, -68, -70, -72, -73, -74, -78, -80.82677989, -85, -85.40515262, -88.65355977, -89, -91.17322011, -92, -96, -98])
+    #    
+    #    print("Imprimiendo función")
+    #    plt.plot(potencias,distancias,'r*', xp, p0(xp), '--')
+    #    plt.ylim ( -1,10)
+    #    plt.show()
     
     return p0
 
