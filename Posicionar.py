@@ -5,7 +5,7 @@ import mpmath as mp
 from math import ceil
 import sys
 import numpy as num
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 #import bluetooth._bluetooth as bluez
 
 # Más info sobre las constantes en la tabla de drive. 
