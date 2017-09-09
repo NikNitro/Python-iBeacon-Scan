@@ -37,13 +37,16 @@ print(dicBalizas[balizas[0].mac])
 import bluetooth
 # RaspiHC será la baliza.
 
-bd_addr = "B8:27:EB:99:23:7E"
-
+# bd_addr = "B8:27:EB:99:23:7E"
+# bd_addr = 'b8:27:eb:99:23:7e'
+# bd_addr = 'b8:27:eb:66:dc:81' # Esta es la mac wifi
+bd_addr = '192.168.31.162' # Ip de red
 port = 1
 
 sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
+print("Socket creado")
 sock.connect((bd_addr, port))
-
+print("Socket conectado")
 sock.send("hello!!")
 
 sock.close()
