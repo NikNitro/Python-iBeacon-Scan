@@ -4,6 +4,10 @@ from sympy import *
 import mpmath as mp
 from math import ceil
 import sys
+import numpy as num
+import matplotlib.pyplot as plt
+import blescan
+import bluetooth._bluetooth as bluez
 
 # Más info sobre las constantes en la tabla de drive. 
 # Es necesario calibrarlas ante cualquier cambio.
@@ -228,7 +232,7 @@ def miMinimize(entrada, salidaDeseada, bounds, times=100):
 	return mitad
     
 
-def ajustar(nombre, verGrafica=false):
+def ajustar(nombre, verGrafica=False):
     print("Iniciando ajuste para ", nombre)
     dev_id = 0
     try:
@@ -261,7 +265,7 @@ def ajustar(nombre, verGrafica=false):
         potencias.append(sum(listaBeacons)/len(listaBeacons))
     
     print("Calculando función...")
-    p0 = num.poly1d(num.polyfit(distancias,potencias,30))
+    p0 = num.poly1d(num.polyfit(potencias,distancias,30))
     
     if verGrafica:
         xp = num.array([-50, -68, -70, -72, -73, -74, -78, -80.82677989, -85, -85.40515262, -88.65355977, -89, -91.17322011, -92, -96, -98])
