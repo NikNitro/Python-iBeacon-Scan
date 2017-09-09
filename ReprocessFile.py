@@ -5,14 +5,14 @@ import sys
 from datetime import timedelta
 
 PUERTO = 5010
-SERVER = '192.168.1.8'
+SERVER = '192.168.31.116'
 REALISTICMODE = False
 
 lastTime=-1
 newTime=-1
 
 
-infile=open("importante1.aml", "r")
+infile=open("centralLog.aml", "r")
 primera = True
 #Para cada linea del log 
 for line in infile:

@@ -127,10 +127,10 @@ try:
 			for mac in rssiMedia.keys():
 				A = int(dicBalizas.get(mac).posX)
 				B = int(dicBalizas.get(mac).posY)
-				C2 = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
+				#C = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
 				C = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower) * 1000 # Para que lo de en milímetros
 				print('---rssi: ' + str(rssiMedia.get(mac)))
-				print('---distancia: '+str(C) + " y sin Book: " + str(C2))
+				#print('---distancia: '+str(C) + " y sin Book: " + str(C2))
 
 				polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - C**2)
 				print(polinomio)
