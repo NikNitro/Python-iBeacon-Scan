@@ -6,6 +6,7 @@ import blescan
 import fileLibrary as fl
 import sys
 import bluetooth._bluetooth as bluez
+from Posicionar import ajustar
 
 PUERTO = 5010
 SERVER = '192.168.31.116'
@@ -28,6 +29,8 @@ print macs
 
 blescan.hci_le_set_scan_parameters(sock)
 blescan.hci_enable_le_scan(sock)
+
+ajustar(mi_mac, sock, macs, verGrafica=True):
 
 
 while True:

@@ -50,12 +50,12 @@ try:
 	##Creamos el grafico
 	quiere = "n"
 	for bal in balizas:
-		# print("Imprimiendo " + str(bal.nombre))
+		print("Imprimiendo " + str(bal.nombre))
 		#plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
-		print("¿Quiere ajustar la baliza " + str(bal.nombre) + "? (y/n)")
-		quiere = input()
-		if quiere=="y":
-                    bal.setDistanceFunct(pos.ajustar(bal.nombre))
+		#print("¿Quiere ajustar la baliza " + str(bal.nombre) + "? (y/n)")
+		##quiere = input()
+		#if quiere=="y":
+        #            bal.setDistanceFunct(pos.ajustar(bal.nombre))
 	
 	#Para que pueda seguir calculando cosas
 	#plt.interactive(True)

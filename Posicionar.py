@@ -6,8 +6,7 @@ from math import ceil
 import sys
 import numpy as num
 import matplotlib.pyplot as plt
-import blescan
-import bluetooth._bluetooth as bluez
+#import bluetooth._bluetooth as bluez
 
 # Más info sobre las constantes en la tabla de drive. 
 # Es necesario calibrarlas ante cualquier cambio.
@@ -232,21 +231,9 @@ def miMinimize(entrada, salidaDeseada, bounds, times=100):
 	return mitad
     
 
-def ajustar(nombre, verGrafica=False):
+def ajustar(nombre, sock, macs, verGrafica=False):
+    import blescan
     print("Iniciando ajuste para ", nombre)
-    dev_id = 0
-    try:
-            sock = bluez.hci_open_dev(dev_id)
-            print("ble thread started")
-
-    except:
-            print("error accessing bluetooth device...")
-            sys.exit(1)
-
-    blescan.hci_le_set_scan_parameters(sock)
-    blescan.hci_enable_le_scan(sock)
-    
-
     maxima = input("Por favor, introduzca la distancia máxima")
     distancias = [1, ceil(maxima/2.),maxima]
     potencias = []
