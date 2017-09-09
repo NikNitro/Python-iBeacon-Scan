@@ -8,6 +8,9 @@ class Baliza:
       self.posY   = posY
       self.txpower = txpower
 
+   def setDistanceFunct(self, f0):
+        self.func = f0
+        
    def __str__(self):
       return self.nombre
 """
@@ -28,6 +31,8 @@ def printList(lista):
    for baliza in lista:
       print baliza
 """
+
+        
 def readFile(name):
    f = open(name, "r")
    linea = f.readline()

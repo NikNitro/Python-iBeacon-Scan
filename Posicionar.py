@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-#import blescan
-#import fileLibrary as fl
-#import sys
-
-#import bluetooth._bluetooth as bluez
 from sympy import *
 import mpmath as mp
+from math import ceil
+import sys
+import numpy as num
+import matplotlib.pyplot as plt
+import blescan
+import bluetooth._bluetooth as bluez
 
 # Más info sobre las constantes en la tabla de drive. 
 # Es necesario calibrarlas ante cualquier cambio.
@@ -129,8 +130,8 @@ def Posicionar(distancias, MARGEN=100):
 
 #####################################################
 # Si rssi = -10 * n * log10(distancia) + txpower    #
-# distancia = 10 ^ ((txpower-rssi)/10*n)			#
-# La devuelvo multiplicada por 10 para obtener mm	#
+# distancia = 10 ^ ((txpower-rssi)/10*n)            #
+# La devuelvo multiplicada por 1 para obtener m	    #
 #####################################################
 def rssi2distance(rssi, txpower=TXPOWER, n=NCONSTANT):
 	num =TXPOWER-rssi
@@ -139,7 +140,7 @@ def rssi2distance(rssi, txpower=TXPOWER, n=NCONSTANT):
 	distance = pow(10, exp)
 
 
-	return distance*1000
+	return distance*1
 
 """
 python
@@ -164,7 +165,7 @@ def rssi2distanceBook(rssi, txpower=TXPOWER, n=NCONSTANT):
 	# el efecto aleatorio producido por las sombras que originan los diferentes obstáculos.
 	sigma = 18.75
 	mu = 10/mp.ln(10)
-	print Pij, P0, np, sigma, mu, mp.e, 
+	print(Pij, P0, np, sigma, mu, mp.e) 
 
 	#Ahora montamos la función
 	distancia = d0
@@ -200,3 +201,80 @@ def VirtualBeacons(cual, cuantas):
 		li +=[stri]
 	print(li)
 	return li
+
+# Funciones para obtener la mejor n
+def miMinimize(entrada, salidaDeseada, bounds, times=100):
+
+	def f(entrada, salidaDeseada, n):
+	    distanciasCalculadas = []
+	    distanciasReales = salidaDeseada
+	    rssis = entrada
+	    distanciasCalculadas = num.array(rssi2distance(rssis,txpower=rssis[0], n=n))
+	    # print('calculadaS: ' + str(distanciasCalculadas))
+	    diferencia = distanciasReales - distanciasCalculadas
+	    # print(diferencia, sum(diferencia))
+	    return sum(diferencia)
+
+	inicio = bounds[0]
+	fin = bounds[1]
+	for i in range(0,times):
+		mitad = inicio + (fin-inicio)/2.
+		mitad1 = inicio+(mitad-inicio)/2.
+		mitad2 = mitad+(fin-mitad)/2.
+		
+		resAux1 = f(entrada, salidaDeseada, mitad1)
+		resAux2 = f(entrada, salidaDeseada, mitad2)
+		# print(resAux1, mitad1, resAux2, mitad2)
+		if resAux1>resAux2:
+			inicio = mitad
+		else:
+			fin = mitad
+	return mitad
+    
+
+def ajustar(nombre, verGrafica=False):
+    print("Iniciando ajuste para ", nombre)
+    dev_id = 0
+    try:
+            sock = bluez.hci_open_dev(dev_id)
+            print("ble thread started")
+
+    except:
+            print("error accessing bluetooth device...")
+            sys.exit(1)
+
+    blescan.hci_le_set_scan_parameters(sock)
+    blescan.hci_enable_le_scan(sock)
+    
+
+    maxima = input("Por favor, introduzca la distancia máxima")
+    distancias = [1, ceil(maxima/2.),maxima]
+    potencias = []
+
+    for d in distancias:
+        print("Por favor, póngase a " + str(d) + " metros de la baliza y pulse cualquier tecla.")
+        input()
+        print("Por favor, espere un momento...")
+        listaBeacons = []
+        while len(listaBeacons)<20:
+            
+            returnedList = blescan.parse_events_2(sock, macs, 10)
+            for beacon in returnedList:
+                mac, pwr = recibido.split(",")
+                listaBeacons.append(pwr)
+        potencias.append(sum(listaBeacons)/len(listaBeacons))
+    
+    print("Calculando función...")
+    p0 = num.poly1d(num.polyfit(potencias,distancias,30))
+    
+    if verGrafica:
+        xp = num.array([-50, -68, -70, -72, -73, -74, -78, -80.82677989, -85, -85.40515262, -88.65355977, -89, -91.17322011, -92, -96, -98])
+        
+        print("Imprimiendo función")
+        plt.plot(potencias,distancias,'r*', xp, p0(xp), '--')
+        plt.ylim ( -1,10)
+        plt.show()
+    
+    return p0
+
+    
