@@ -234,20 +234,20 @@ def miMinimize(entrada, salidaDeseada, bounds, times=100):
 def ajustar(nombre, sock, macs, verGrafica=False):
     import blescan
     print("Iniciando ajuste para ", nombre)
-    maxima = input("Por favor, introduzca la distancia máxima")
+    maxima = input("Por favor, introduzca la distancia máxima\n")
     distancias = [1, ceil(maxima/2.),maxima]
     potencias = []
 
     for d in distancias:
-        print("Por favor, póngase a " + str(d) + " metros de la baliza y pulse cualquier tecla.")
-        input()
+        print("Por favor, póngase a " + str(d) + " metros de la baliza y pulse enter.")
+        raw_input()
         print("Por favor, espere un momento...")
         listaBeacons = []
         while len(listaBeacons)<20:
             
             returnedList = blescan.parse_events_2(sock, macs, 10)
             for beacon in returnedList:
-                mac, pwr = recibido.split(",")
+                mac, pwr = beacon.split(",")
                 listaBeacons.append(pwr)
         potencias.append(sum(listaBeacons)/len(listaBeacons))
     
