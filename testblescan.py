@@ -30,7 +30,7 @@ print macs
 blescan.hci_le_set_scan_parameters(sock)
 blescan.hci_enable_le_scan(sock)
 
-func = ajustar(mi_mac, sock, macs, verGrafica=True)
+#func = ajustar(mi_mac, sock, macs, verGrafica=True)
 
 
 while True:
@@ -42,8 +42,10 @@ while True:
 		#print "----------"
 		#print beacon
 		mac, pwr = beacon.split(',')
-		print("distancia: ", str(func(float(pwr))))
+		#print("distancia: ", str(func(float(pwr))))
+		print("distancia: ", str(16.469849301549)
 		mensaje= str(mi_mac+","+mac+","+str(func(float(pwr)))) 
+		print("\tSe envian " + str(len(mensaje)) + " bytes que son " + mensaje)
 		socket_c.send(len(mensaje))
 		socket_c.send(mensaje) 
 	#socket_c.send('END')

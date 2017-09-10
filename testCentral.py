@@ -84,8 +84,9 @@ try:
 		socket_c, (host_c, puerto_c) = socket_s.accept()
 		#accept se mantiene a la espera de conexiones entrantes, bloqueando la ejecución hasta que llega un mensaje
 		try:
-			TAMMSG = int((socket_c.recv(2)).decode())
-			recibido = socket_c.recv(TAMMSG)
+			tam_rec = int((socket_c.recv(2)).decode())
+			print('se reciben: ', tam_rec, 'bytes')
+			recibido = socket_c.recv(tam_rec)
 			while(recibido):#!='END'):
 				#time.sleep(1)
 				#print("----------------------")
