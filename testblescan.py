@@ -30,7 +30,19 @@ print macs
 blescan.hci_le_set_scan_parameters(sock)
 blescan.hci_enable_le_scan(sock)
 
-func = ajustar(mi_mac, sock, macs, verGrafica=True)
+#Leemos el archivo por si ya hemos ajustado antes esa función
+func = 0
+f=open("ajustes.aml", "ra") #append, para que no borre
+linea = f.readline()
+while linea != "" and linea.split('/')[0] != mi_mac:
+	linea = f.readline()
+
+if linea == "":
+	func = ajustar(mi_mac, sock, macs, verGrafica=True)
+else:
+	func = linea.split('/')[1]
+	func = num.poly1d(num.array([num.float64(s) for s in func[1:-1].replace('\n', '').split('  ')]))
+	f.write(str(func))
 
 
 while True:
