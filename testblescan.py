@@ -43,7 +43,9 @@ while True:
 		#print beacon
 		mac, pwr = beacon.split(',')
 		print("distancia: ", str(func(float(pwr))))
-		socket_c.send(mi_mac+","+mac+","+str(func(float(pwr)))) 
+		mensaje= str(mi_mac+","+mac+","+str(func(float(pwr)))) 
+		socket_c.send(len(mensaje))
+		socket_c.send(mensaje) 
 	#socket_c.send('END')
 	socket_c.close()
 	time.sleep(1)
