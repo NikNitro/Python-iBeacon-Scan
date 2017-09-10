@@ -91,7 +91,9 @@ try:
 				# Actualmente no usamos la variable mac porque suponemos que solo hay que
 				# localizar un elemento
 				#mac_origen, mac, valx, valy, thrash, pwr = recibido.split(",")
-				mac_origen, mac, dist = recibido.split(",")
+				datos = recibido.decode()
+				print(datos)
+				mac_origen, mac, dist = datos.split(",")
 
 				f=open("centralLog.aml", "a") #append, para que no borre
 				f.write(time.strftime("%X") + ": --" + str(dicBalizas[mac_origen].nombre) +"-- " + str(recibido) + "\n")

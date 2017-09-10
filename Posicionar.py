@@ -249,7 +249,7 @@ def ajustar(nombre, sock, macs, verGrafica=False):
             for beacon in returnedList:
 		print(beacon)
                 mac, pwr = beacon.split(",")
-                listaBeacons.append(pwr)
+                listaBeacons.append(float(pwr))
         potencias.append(sum(listaBeacons)/len(listaBeacons))
     
     print("Calculando función...")
