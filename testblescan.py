@@ -30,7 +30,7 @@ print macs
 blescan.hci_le_set_scan_parameters(sock)
 blescan.hci_enable_le_scan(sock)
 
-ajustar(mi_mac, sock, macs, verGrafica=True)
+func = ajustar(mi_mac, sock, macs, verGrafica=True)
 
 
 while True:
@@ -41,7 +41,8 @@ while True:
 	for beacon in returnedList:
 		#print "----------"
 		#print beacon
-		socket_c.send(mi_mac+","+beacon) 
+		mac, pwr = beacon.split(',')
+		socket_c.send(mi_mac+","+mac+","+func(float(pwr))) 
 	#socket_c.send('END')
 	socket_c.close()
 	time.sleep(1)

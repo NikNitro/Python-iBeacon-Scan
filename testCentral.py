@@ -91,14 +91,14 @@ try:
 				# Actualmente no usamos la variable mac porque suponemos que solo hay que
 				# localizar un elemento
 				#mac_origen, mac, valx, valy, thrash, pwr = recibido.split(",")
-				mac_origen, mac, pwr = recibido.split(",")
+				mac_origen, mac, dist = recibido.split(",")
 
 				f=open("centralLog.aml", "a") #append, para que no borre
 				f.write(time.strftime("%X") + ": --" + str(dicBalizas[mac_origen].nombre) +"-- " + str(recibido) + "\n")
 				f.close()
 
-				dicRecepcion[mac_origen].append(pwr)
-				# Para no consumir toda la memoria del dispositivo
+				dicRecepcion[mac_origen].append(dist)
+				# Para no consumir dtoda la memoria del dispositivo
 				while(len(dicRecepcion[mac_origen]) > MAX):
 					dicRecepcion[mac_origen].popleft()
 				recibido = socket_c.recv(TAMMSG)
@@ -133,13 +133,14 @@ try:
 				A = int(dicBalizas.get(mac).posX)
 				B = int(dicBalizas.get(mac).posY)
 				#C = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
-				C = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower) * 1000 # Para que lo de en milímetros
-				print('---rssi: ' + str(rssiMedia.get(mac)))
-				#print('---distancia: '+str(C) + " y sin Book: " + str(C2))
+				#C = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower) * 1000 # Para que lo de en centímetros
+				C = rssiMedia.get(mac)*100
+				print('---distancia: '+str(C) + " de " + mac)
 
 				polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - C**2)
 				print(polinomio)
 				distancias.append(polinomio)
+			print(distancias)
 
 			posicionFinal = pos.Posicionar(distancias, MARGEN)
 			if(posicionFinal=="noSoluc" and ultPosEncontrada == 'ninguna'):
