@@ -21,7 +21,7 @@ PUERTO = 5010
 MARGEN=500
 MAX = 20 # Número de paquetes que vamos a guardar de cada baliza
 #TAMMSG = 39 # Tam del mensaje a recibir (mac+,+mac+,+txpower)
-TAMMSG = 49 # Tam del mensaje a recibir (mac+,+mac+,+distancia)
+TAMMSG = 42 # Tam del mensaje a recibir (mac+,+mac+,+distancia)
 socket_s = socket.socket()
 ultPosEncontrada = "ninguna"
 #Para los dibujos
@@ -84,9 +84,9 @@ try:
 		socket_c, (host_c, puerto_c) = socket_s.accept()
 		#accept se mantiene a la espera de conexiones entrantes, bloqueando la ejecución hasta que llega un mensaje
 		try:
-			tam_rec = int((socket_c.recv(2)).decode())
-			print('se reciben: ', tam_rec, 'bytes')
-			recibido = socket_c.recv(tam_rec)
+			#tam_rec = int((socket_c.recv(2)).decode())
+			#print('se reciben: ', tam_rec, 'bytes')
+			recibido = socket_c.recv(TAMMSG)
 			while(recibido):#!='END'):
 				#time.sleep(1)
 				#print("----------------------")
@@ -106,6 +106,11 @@ try:
 				# Para no consumir dtoda la memoria del dispositivo
 				while(len(dicRecepcion[mac_origen]) > MAX):
 					dicRecepcion[mac_origen].popleft()
+
+				#recibido = (socket_c.recv(2)).decode()
+				#print('se reciben: ', recibido, 'bytes')
+				#tam_rec = int(recibido)
+				#print('se reciben: ', tam_rec, 'bytes')
 				recibido = socket_c.recv(TAMMSG)
 				if not recibido: break
 			#socket_c.send("200")
