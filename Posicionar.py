@@ -247,7 +247,7 @@ def ajustar(nombre, sock, macs, verGrafica=False):
             
             returnedList = blescan.parse_events_2(sock, macs, 10)
             for beacon in returnedList:
-		print(beacon)
+				print(beacon)
                 mac, pwr = beacon.split(",")
                 listaBeacons.append(float(pwr))
         potencias.append(sum(listaBeacons)/len(listaBeacons))
