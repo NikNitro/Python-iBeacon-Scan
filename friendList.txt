@@ -1,4 +1,4 @@
-MI Band 2@D0:C9:79:93:D8:94@200@100@0@
-RaspberryPi3eth1@b8:27:eb:ef:67:07@0@850@-59,807@
-Raspberry Pi 1B@b8:27:eb:f9:5f:fe@1200@0@-67,4@
-RaspberryPi3HC@b8:27:eb:33:89:d4@2800@800@-61,3@
+MI Band 2@D0:C9:79:93:D8:94@1.9@0.8@0@
+RaspberryPi3eth1@b8:27:eb:ef:67:07@0@0.85@-59.807@
+Raspberry Pi 1B@b8:27:eb:f9:5f:fe@1.2@0@-67.4@
+RaspberryPi3HC@b8:27:eb:33:89:d4@2.8@0.8@-61.3@

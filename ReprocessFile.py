@@ -6,7 +6,7 @@ from datetime import timedelta
 
 PUERTO = 5010
 SERVER = '192.168.31.116'
-REALISTICMODE = True
+REALISTICMODE = False
 
 lastTime=-1
 newTime=-1

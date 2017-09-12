@@ -14,7 +14,7 @@ import numpy as num
 TXPOWER = -69.16666667#-72.49269311
 NCONSTANT = 1#0.3886
 
-def Posicionar(distancias, MARGEN=100, aproximar=False):
+def Posicionar(distancias, MARGEN=100, aproximar=True):
 	#POSICIONAR Recibe las distancias a cada baliza en forma de ecuación y
 	# devuelve la posición del elemento a encontrar.
 	#   
@@ -34,10 +34,14 @@ def Posicionar(distancias, MARGEN=100, aproximar=False):
 	x=Symbol('x') 
 	y=Symbol('y')
 	if aproximar:
+		#print(distancias)
 		distanciasAux = []
 		for d in distancias:
-			distanciasAux = d-1
+			distanciasAux.append(d-1)
 		distancias = distanciasAux
+		# print(distancias)
+	listaX = []
+	listaY = []
 
 	for i in range(0, numDist):
 		for j in range(i, numDist):
@@ -78,6 +82,7 @@ def Posicionar(distancias, MARGEN=100, aproximar=False):
 							#if(mapObjX.isKey(single(solx(k)))) 
 							#print("solx vale " + str(a))
 							valor = int(solx[k])
+							listaX.append(valor)
 							goodKey = IsThereASimilarKey(mapObjX, valor, MARGEN);
 							#print("Encontrada ke X similar a "+ str(solx[k]) + ': '+str(goodKey)+'\n')
 							if(goodKey!=-1):
@@ -93,6 +98,7 @@ def Posicionar(distancias, MARGEN=100, aproximar=False):
 						if(a.imag == 0):
 							#print("soly vale " + str(a))
 							valor = int(soly[k])
+							listaY.append(valor)
 							goodKey = IsThereASimilarKey(mapObjY, valor, MARGEN);
 							#print("Encontrada key Y similar a "+ str(soly[k]) + ': '+str(goodKey)+'\n')
 							if(goodKey!=-1):
@@ -103,16 +109,17 @@ def Posicionar(distancias, MARGEN=100, aproximar=False):
 
 	## Elegimos a los valores de x y de y resultantes, tomando los que tienen 
 	# más coincidencias
-	listaX = list(mapObjX.keys())
-	listaY = list(mapObjY.keys())
+	#listaX = list(mapObjX.keys())
+	#listaY = list(mapObjY.keys())
+	#print(listaX, listaY)
 
 
-	if aproximar:
+	if aproximar and len(listaX)>0 and len(listaY)>0:
 		elemX = 0
 		numX  = 0
 		elemY = 0
 		numY  = 0
-
+		"""
 		for i in range(1,len(listaX)):
 		    elemAux = listaX[i];
 		    numAux = mapObjX[elemAux];
@@ -124,8 +131,10 @@ def Posicionar(distancias, MARGEN=100, aproximar=False):
 		    numAux = mapObjY[elemAux];
 		    elemY = elemY + elemAux*numAux
 		    numY = numY + numAux
-
+		
 		return (elemX/numX, elemY/numY)
+		"""
+		return (sum(listaX)/len(listaX), sum(listaY)/len(listaY))
 
 	if(len(listaX)>0 and len(listaY)>0):
 		elemX = listaX[0];
@@ -202,7 +211,7 @@ def rssi2distanceBook(rssi, txpower=TXPOWER, n=NCONSTANT):
 
 def IsThereASimilarKey(mapObj, elem, margen=50):
 	result = -1
-	for i in range((elem-margen), (elem+margen)):
+	for i in range(int(elem-margen), int(elem+margen)):
 		if(i in mapObj.keys()):
 			result = i
 

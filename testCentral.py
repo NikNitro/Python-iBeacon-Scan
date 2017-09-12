@@ -14,12 +14,13 @@ from sympy import *
 #To plot
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 
 x=Symbol('x') 
 y=Symbol('y')
 PUERTO = 5010
 MARGEN=0.02
-LISTA_MARGENES = [x/100 for x in range(-int(MARGEN*100),int(MARGEN*100)+1)]
+#LISTA_MARGENES = [x/100 for x in range(-int(MARGEN*100),int(MARGEN*100)+1)]
 MAX = 20 # Número de paquetes que vamos a guardar de cada baliza
 #TAMMSG = 39 # Tam del mensaje a recibir (mac+,+mac+,+txpower)
 TAMMSG = 42 # Tam del mensaje a recibir (mac+,+mac+,+distancia)
@@ -53,7 +54,7 @@ try:
 	quiere = "n"
 	for bal in balizas:
 		print("Imprimiendo " + str(bal.nombre))
-		#plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
+		plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
 		#print("¿Quiere ajustar la baliza " + str(bal.nombre) + "? (y/n)")
 		##quiere = input()
 		#if quiere=="y":
@@ -62,7 +63,7 @@ try:
 	#Para que pueda seguir calculando cosas
 	#plt.interactive(True)
 	#Para que muestre la leyenda
-	#plt.legend(loc = 2)
+	plt.legend(loc = 2)
 	#Para que lo muestre
 	#plt.show()
 
@@ -125,9 +126,9 @@ try:
 			queue = dicRecepcion[mac]
 			lista = list(queue)
 			tamm = len(lista)
-			print("tamm ", tamm)
+			# print("tamm ", tamm)
 			lista.sort()
-			print("lista ", str(lista))
+			# print("lista ", str(lista))
 			listaEnMedio = lista[3:7]
 			rssiMedia[mac] = float("{0:.2f}".format(pos.average(listaEnMedio)))
 
@@ -141,17 +142,17 @@ try:
 		if len(macsCompletas) > 2:
 			distancias = []
 			for mac in rssiMedia.keys():
-				A = int(dicBalizas.get(mac).posX)
-				B = int(dicBalizas.get(mac).posY)
+				A = float(dicBalizas.get(mac).posX)
+				B = float(dicBalizas.get(mac).posY)
 				#C = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
 				#C = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower) * 1000 # Para que lo de en centímetros
 				C = rssiMedia.get(mac)
 				print('---distancia: '+str(C) + " de " + mac)
 
-				for mm in LISTA_MARGENES:
-					polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - (C+mm)**2)
-					#print(polinomio)
-					distancias.append(polinomio)
+				#for mm in LISTA_MARGENES:
+				polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - C**2)
+				#print(polinomio)
+				distancias.append(polinomio)
 			# print(distancias)
 
 			posicionFinal = pos.Posicionar(distancias, MARGEN)
@@ -166,15 +167,14 @@ try:
 				listaPuntosY += [posicionFinal[1]]
 				ultPosEncontrada = posicionFinal
 				total = total + 1
-				if(total>10):
+				if(total>0):
 					#####IMPRIMIMOS
 					##Creamos el grafico
 					#for bal in balizas:
 					#	plt.scatter(bal.posX,bal.posY, marker='2', label=bal.nombre)
 					plt.scatter(listaPuntosX,listaPuntosY,c='b', label='posicion')
-					#plt.legend(loc = 1)
-					#plt.show()
-					total=0
+					plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+					plt.show()
 
 finally:
 	socket_s.close()
