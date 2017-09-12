@@ -103,14 +103,8 @@ def Posicionar(distancias, MARGEN=100, aproximar=False):
 
 	## Elegimos a los valores de x y de y resultantes, tomando los que tienen 
 	# más coincidencias
-<<<<<<< HEAD
 	listaX = list(mapObjX.keys())
 	listaY = list(mapObjY.keys())
-	#print("MapX: ", mapObjX)
-	#print("MapY: ", mapObjY)
-=======
-	listaX = mapObjX.keys();
-	listaY = mapObjY.keys();
 
 
 	if aproximar:
@@ -133,7 +127,6 @@ def Posicionar(distancias, MARGEN=100, aproximar=False):
 
 		return (elemX/numX, elemY/numY)
 
->>>>>>> 0176865bbd4b36f68b68d41c572f1d4406130c36
 	if(len(listaX)>0 and len(listaY)>0):
 		elemX = listaX[0];
 		numX  = mapObjX[elemX];
