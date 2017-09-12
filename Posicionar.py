@@ -39,11 +39,11 @@ def Posicionar(distancias, MARGEN=100):
 				#print(distancias[i])
 				#print(distancias[j])
 				resAux = solve([distancias[i], distancias[j]], [x,y])
-				print('Ecuaciones: \n')
-				print(str(distancias[i]))
-				print(str(distancias[j]))
-				print('Soluciones:\n')
-				print(str(resAux))
+				#print('Ecuaciones: \n')
+				#print(str(distancias[i]))
+				#print(str(distancias[j]))
+				#print('Soluciones:\n')
+				#print(str(resAux))
 				if(len(resAux)!=0):
 					# Hay que guardar los resultados dependiendo del número de soluciones
 					if(len(resAux)==1):
@@ -71,12 +71,13 @@ def Posicionar(distancias, MARGEN=100):
 							# INICIO Update 1
 							#if(mapObjX.isKey(single(solx(k)))) 
 							#print("solx vale " + str(a))
-							goodKey = IsThereASimilarKey(mapObjX, solx[k], MARGEN);
+							valor = int(solx[k])
+							goodKey = IsThereASimilarKey(mapObjX, valor, MARGEN);
 							#print("Encontrada ke X similar a "+ str(solx[k]) + ': '+str(goodKey)+'\n')
 							if(goodKey!=-1):
 								mapObjX[goodKey] = (mapObjX[goodKey] + 1);
 							else:
-								mapObjX[int(solx[k])] = 1;
+								mapObjX[valor] = 1;
 
 						""" ñañaña """
 		            # Y guardamos la y
@@ -86,20 +87,22 @@ def Posicionar(distancias, MARGEN=100):
 						#Si es un numero imaginario, nos quedamos solo con su parte real
 						if(a.imag == 0):
 							#print("soly vale " + str(a))
-							goodKey = IsThereASimilarKey(mapObjY, soly[k], MARGEN);
+							valor = int(soly[k])
+							goodKey = IsThereASimilarKey(mapObjY, valor, MARGEN);
 							#print("Encontrada key Y similar a "+ str(soly[k]) + ': '+str(goodKey)+'\n')
 							if(goodKey!=-1):
 								mapObjY[goodKey] = (mapObjY[goodKey] + 1);
 							else:
-								mapObjY[int(soly[k])]= 1;
+								mapObjY[valor]= 1;
 								# FIN Update 1
 
 						""" ñañaña """
 	## Elegimos a los valores de x y de y resultantes, tomando los que tienen 
 	# más coincidencias
-	listaX = mapObjX.keys();
-	listaY = mapObjY.keys();
-
+	listaX = list(mapObjX.keys())
+	listaY = list(mapObjY.keys())
+	#print("MapX: ", mapObjX)
+	#print("MapY: ", mapObjY)
 	if(len(listaX)>0 and len(listaY)>0):
 		elemX = listaX[0];
 		numX  = mapObjX[elemX];
@@ -173,9 +176,9 @@ def rssi2distanceBook(rssi, txpower=TXPOWER, n=NCONSTANT):
 	return distancia
 
 
-def IsThereASimilarKey(mapObj, elem, margen=1):
+def IsThereASimilarKey(mapObj, elem, margen=50):
 	result = -1
-	for i in range(elem-margen, elem+margen):
+	for i in range((elem-margen), (elem+margen)):
 		if(i in mapObj.keys()):
 			result = i
 

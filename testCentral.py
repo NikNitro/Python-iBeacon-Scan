@@ -18,7 +18,8 @@ import numpy as np
 x=Symbol('x') 
 y=Symbol('y')
 PUERTO = 5010
-MARGEN=500
+MARGEN=0.02
+LISTA_MARGENES = [x/100 for x in range(-int(MARGEN*100),int(MARGEN*100)+1)]
 MAX = 20 # Número de paquetes que vamos a guardar de cada baliza
 #TAMMSG = 39 # Tam del mensaje a recibir (mac+,+mac+,+txpower)
 TAMMSG = 42 # Tam del mensaje a recibir (mac+,+mac+,+distancia)
@@ -46,7 +47,7 @@ try:
 	#print(str(balizas[0]) + " " + str(balizas[1]))
 	#mac0 = balizas[0].mac
 	#print(str(mac0))
-	print(dicBalizas[balizas[0].mac])
+	print(dicBalizas)
 
 	##Creamos el grafico
 	quiere = "n"
@@ -99,7 +100,7 @@ try:
 				mac_origen, mac, dist = datos.split(",")
 
 				f=open("centralLog.aml", "a") #append, para que no borre
-				f.write(time.strftime("%X") + ": --" + str(dicBalizas[mac_origen].nombre) +"-- " + str(recibido) + "\n")
+				f.write(time.strftime("%X") + ":" + mac_origen +"," + mac + ","+ dist + "\n")
 				f.close()
 
 				dicRecepcion[mac_origen].append(dist)
@@ -128,7 +129,7 @@ try:
 			lista.sort()
 			print("lista ", str(lista))
 			listaEnMedio = lista[3:7]
-			rssiMedia[mac] = pos.average(listaEnMedio)
+			rssiMedia[mac] = float("{0:.2f}".format(pos.average(listaEnMedio)))
 
 		# rssiMedia = dict( list( (mac, pos.average(list(dicRecepcion[mac]).sort()[3:(len(dicRecepcion[mac])-3)])) for mac in macsCompletas) )
 		for mac in rssiMedia.keys():
@@ -144,13 +145,14 @@ try:
 				B = int(dicBalizas.get(mac).posY)
 				#C = pos.rssi2distance(rssiMedia.get(mac), dicBalizas.get(mac).txpower)
 				#C = pos.rssi2distanceBook(rssiMedia.get(mac), dicBalizas.get(mac).txpower) * 1000 # Para que lo de en centímetros
-				C = rssiMedia.get(mac)*100
+				C = rssiMedia.get(mac)
 				print('---distancia: '+str(C) + " de " + mac)
 
-				polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - C**2)
-				print(polinomio)
-				distancias.append(polinomio)
-			print(distancias)
+				for mm in LISTA_MARGENES:
+					polinomio = x**2 + y**2 - 2*A*x - 2*B*y + (A**2 + B**2 - (C+mm)**2)
+					#print(polinomio)
+					distancias.append(polinomio)
+			# print(distancias)
 
 			posicionFinal = pos.Posicionar(distancias, MARGEN)
 			if(posicionFinal=="noSoluc" and ultPosEncontrada == 'ninguna'):

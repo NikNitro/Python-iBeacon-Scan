@@ -6,7 +6,7 @@ from datetime import timedelta
 
 PUERTO = 5010
 SERVER = '192.168.31.116'
-REALISTICMODE = False
+REALISTICMODE = True
 
 lastTime=-1
 newTime=-1
@@ -41,12 +41,12 @@ for line in infile:
     #Conectarlo a la central
     socket_c = socket.socket()  
     socket_c.connect((SERVER, PUERTO))  
-    socket_c.send(line[-40: -1])
+    socket_c.send(line[9: -1].encode('utf-8'))
     socket_c.close()
-
+"""
 socket_c = socket.socket()  
 socket_c.connect((SERVER, PUERTO))  
 socket_c.send('END')
-
+"""
 socket_c.close()
 infile.close()
