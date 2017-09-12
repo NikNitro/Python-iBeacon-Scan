@@ -14,7 +14,7 @@ import numpy as num
 TXPOWER = -69.16666667#-72.49269311
 NCONSTANT = 1#0.3886
 
-def Posicionar(distancias, MARGEN=100):
+def Posicionar(distancias, MARGEN=100, aproximar=False):
 	#POSICIONAR Recibe las distancias a cada baliza en forma de ecuación y
 	# devuelve la posición del elemento a encontrar.
 	#   
@@ -33,6 +33,12 @@ def Posicionar(distancias, MARGEN=100):
 
 	x=Symbol('x') 
 	y=Symbol('y')
+	if aproximar:
+		distanciasAux = []
+		for d in distancias:
+			distanciasAux = d-1
+		distancias = distanciasAux
+
 	for i in range(0, numDist):
 		for j in range(i, numDist):
 			if i != j:
@@ -79,7 +85,6 @@ def Posicionar(distancias, MARGEN=100):
 							else:
 								mapObjX[valor] = 1;
 
-						""" ñañaña """
 		            # Y guardamos la y
 					for k in range(0, len(soly)):
 						""" Vamos a añadir clausulas para ignorar las soluciones complejas """
@@ -96,13 +101,39 @@ def Posicionar(distancias, MARGEN=100):
 								mapObjY[valor]= 1;
 								# FIN Update 1
 
-						""" ñañaña """
 	## Elegimos a los valores de x y de y resultantes, tomando los que tienen 
 	# más coincidencias
+<<<<<<< HEAD
 	listaX = list(mapObjX.keys())
 	listaY = list(mapObjY.keys())
 	#print("MapX: ", mapObjX)
 	#print("MapY: ", mapObjY)
+=======
+	listaX = mapObjX.keys();
+	listaY = mapObjY.keys();
+
+
+	if aproximar:
+		elemX = 0
+		numX  = 0
+		elemY = 0
+		numY  = 0
+
+		for i in range(1,len(listaX)):
+		    elemAux = listaX[i];
+		    numAux = mapObjX[elemAux];
+		    elemX = elemX + elemAux*numAux
+		    numX = numX + numAux
+
+		for i in range(1,len(listaY)):
+		    elemAux = listaY[i];
+		    numAux = mapObjY[elemAux];
+		    elemY = elemY + elemAux*numAux
+		    numY = numY + numAux
+
+		return (elemX/numX, elemY/numY)
+
+>>>>>>> 0176865bbd4b36f68b68d41c572f1d4406130c36
 	if(len(listaX)>0 and len(listaY)>0):
 		elemX = listaX[0];
 		numX  = mapObjX[elemX];
@@ -128,7 +159,7 @@ def Posicionar(distancias, MARGEN=100):
 		#print(elemY)
 		return (elemX, elemY)
 	else:
-		return "noSoluc"
+		return Posicionar(distancias, MARGEN, True)#"noSoluc"
 
 #####################################################
 # Si rssi = -10 * n * log10(distancia) + txpower    #
